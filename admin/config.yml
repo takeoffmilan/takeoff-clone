@@ -3,4 +3,4 @@ backend:
   repo: takeoffmilan/takeoff-clone
   branch: main
   base_url: https://decap-auth.takeoffmilan.workers.dev
-  auth_endpoint: auth
+  auth_endpoint: /auth
