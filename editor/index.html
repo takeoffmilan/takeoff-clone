@@ -3,49 +3,22 @@
 <head>
   <meta charset="utf-8">
   <title>TakeOff Visual Editor</title>
-
   <link rel="stylesheet" href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">
   <script src="https://unpkg.com/grapesjs"></script>
-
   <style>
     html, body { margin: 0; height: 100%; }
     #gjs { height: 100vh; }
   </style>
 </head>
-
 <body>
   <div id="gjs">Loading...</div>
 
   <script>
     async function loadSite() {
       const res = await fetch("/takeoff/takeoffmilan.com/index.html");
-      const htmlText = await res.text();
+      let html = await res.text();
 
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(htmlText, "text/html");
-
-      doc.querySelectorAll("script").forEach(s => s.remove());
-
-     const basePath = "/takeoff/takeoffmilan.com/";
-
-doc.querySelectorAll("link[href], img[src], source[src], video[src]").forEach(el => {
-  ["href", "src"].forEach(attr => {
-    const value = el.getAttribute(attr);
-    if (!value) return;
-
-    if (value.startsWith("http")) return;
-    if (value.startsWith("data:")) return;
-    if (value.startsWith("/")) return;
-
-    el.setAttribute(attr, basePath + value);
-  });
-});
-
-const styles = Array.from(doc.querySelectorAll('link[rel="stylesheet"]'))
-  .map(link => link.getAttribute("href"))
-  .filter(Boolean);
-
-      const html = doc.body.innerHTML;
+      html = html.replace(/<script[\s\S]*?<\/script>/gi, "");
 
       const editor = grapesjs.init({
         container: "#gjs",
@@ -54,10 +27,7 @@ const styles = Array.from(doc.querySelectorAll('link[rel="stylesheet"]'))
         storageManager: false,
         components: html,
         canvas: {
-          styles: styles
-        },
-        blockManager: {
-          appendTo: false
+          scripts: [],
         }
       });
 
@@ -65,18 +35,7 @@ const styles = Array.from(doc.querySelectorAll('link[rel="stylesheet"]'))
         id: "export-html",
         label: "Export HTML",
         command(editor) {
-          const finalHtml = `
-<!doctype html>
-<html>
-<head>
-${styles.map(s => `<link rel="stylesheet" href="${s}">`).join("\n")}
-<style>${editor.getCss()}</style>
-</head>
-<body>
-${editor.getHtml()}
-</body>
-</html>`;
-
+          const finalHtml = editor.getHtml();
           const blob = new Blob([finalHtml], { type: "text/html" });
           const a = document.createElement("a");
           a.href = URL.createObjectURL(blob);
