@@ -3,74 +3,67 @@
 <head>
   <meta charset="utf-8">
   <title>TakeOff Visual Editor</title>
-
   <link rel="stylesheet" href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">
   <script src="https://unpkg.com/grapesjs"></script>
-
   <style>
     body { margin: 0; }
     #gjs { height: 100vh; }
   </style>
 </head>
-
 <body>
   <div id="gjs"></div>
 
   <script>
     async function startEditor() {
-      let html = localStorage.getItem("takeoff_html");
-
-      if (!html) {
-        const res = await fetch("/takeoff/index.html");
-        html = await res.text();
-      }
+      let html = `
+        <section style="padding:100px 40px;text-align:center;font-family:Arial">
+          <h1 style="font-size:64px;margin-bottom:20px">TakeOff</h1>
+          <p style="font-size:22px">Editor visuale attivo.</p>
+          <a href="#" style="display:inline-block;margin-top:30px;padding:16px 30px;border-radius:50px;background:#000;color:#fff;text-decoration:none">Contact Us</a>
+        </section>
+      `;
 
       const editor = grapesjs.init({
         container: "#gjs",
         height: "100vh",
-        fromElement: false,
         storageManager: false,
         components: html,
-        canvas: {
-          styles: [
-            "/takeoff/index.css"
-          ]
-        },
-        panels: {
-          defaults: []
-        }
       });
 
-      editor.Panels.addPanel({
-        id: "top-panel",
-        el: document.createElement("div"),
+      editor.BlockManager.add("text", {
+        label: "Text",
+        content: "<p>Nuovo testo</p>",
       });
 
-      editor.Panels.addButton("options", [
-        {
-          id: "save-local",
-          className: "fa fa-save",
-          label: "Salva",
-          command(editor) {
-            localStorage.setItem("takeoff_html", editor.getHtml());
-            alert("Salvato nel browser.");
-          },
+      editor.BlockManager.add("image", {
+        label: "Image",
+        content: '<img src="https://via.placeholder.com/800x400" style="max-width:100%">',
+      });
+
+      editor.BlockManager.add("button", {
+        label: "Button",
+        content: '<a href="#" style="padding:14px 28px;background:#000;color:#fff;border-radius:40px;text-decoration:none">Button</a>',
+      });
+
+      editor.Panels.addButton("options", {
+        id: "export",
+        label: "Export",
+        command(editor) {
+          const full = `
+<!doctype html>
+<html>
+<head>
+<style>${editor.getCss()}</style>
+</head>
+<body>${editor.getHtml()}</body>
+</html>`;
+          const blob = new Blob([full], { type: "text/html" });
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "index-export.html";
+          a.click();
         },
-        {
-          id: "export-html",
-          label: "Export",
-          command(editor) {
-            const html = editor.getHtml();
-            const css = editor.getCss();
-            const full = `<!doctype html><html><head><style>${css}</style></head><body>${html}</body></html>`;
-            const blob = new Blob([full], { type: "text/html" });
-            const a = document.createElement("a");
-            a.href = URL.createObjectURL(blob);
-            a.download = "index-export.html";
-            a.click();
-          },
-        },
-      ]);
+      });
     }
 
     startEditor();
