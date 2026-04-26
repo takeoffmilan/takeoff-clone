@@ -4,3 +4,45 @@ backend:
   branch: main
   base_url: https://decap-auth.takeoffmilan.workers.dev
   auth_endpoint: /auth
+
+media_folder: "takeoff"
+public_folder: "/takeoff"
+
+collections:
+  - name: pages
+    label: Pages
+    files:
+      - file: content/home.yml
+        label: Homepage
+        name: homepage
+        fields:
+          - label: Sections
+            name: sections
+            widget: list
+            types:
+              - label: Hero
+                name: hero
+                widget: object
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - { label: Subtitle, name: subtitle, widget: text }
+                  - { label: Button Text, name: button_text, widget: string }
+                  - { label: Button Link, name: button_link, widget: string }
+
+              - label: Services
+                name: services
+                widget: object
+                fields:
+                  - label: Items
+                    name: items
+                    widget: list
+                    field: { label: Service, name: service, widget: string }
+
+              - label: Testimonials
+                name: testimonials
+                widget: object
+                fields:
+                  - label: Quotes
+                    name: quotes
+                    widget: list
+                    field: { label: Quote, name: quote, widget: text }
