@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>TakeOff Visual Editor</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">
+  <script src="https://unpkg.com/grapesjs"></script>
+
+  <style>
+    body { margin: 0; }
+    #gjs { height: 100vh; }
+  </style>
+</head>
+
+<body>
+  <div id="gjs"></div>
+
+  <script>
+    async function startEditor() {
+      let html = localStorage.getItem("takeoff_html");
+
+      if (!html) {
+        const res = await fetch("/takeoff/index.html");
+        html = await res.text();
+      }
+
+      const editor = grapesjs.init({
+        container: "#gjs",
+        height: "100vh",
+        fromElement: false,
+        storageManager: false,
+        components: html,
+        canvas: {
+          styles: [
+            "/takeoff/index.css"
+          ]
+        },
+        panels: {
+          defaults: []
+        }
+      });
+
+      editor.Panels.addPanel({
+        id: "top-panel",
+        el: document.createElement("div"),
+      });
+
+      editor.Panels.addButton("options", [
+        {
+          id: "save-local",
+          className: "fa fa-save",
+          label: "Salva",
+          command(editor) {
+            localStorage.setItem("takeoff_html", editor.getHtml());
+            alert("Salvato nel browser.");
+          },
+        },
+        {
+          id: "export-html",
+          label: "Export",
+          command(editor) {
+            const html = editor.getHtml();
+            const css = editor.getCss();
+            const full = `<!doctype html><html><head><style>${css}</style></head><body>${html}</body></html>`;
+            const blob = new Blob([full], { type: "text/html" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "index-export.html";
+            a.click();
+          },
+        },
+      ]);
+    }
+
+    startEditor();
+  </script>
+</body>
+</html>
