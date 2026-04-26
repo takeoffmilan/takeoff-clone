@@ -26,14 +26,24 @@
 
       doc.querySelectorAll("script").forEach(s => s.remove());
 
-      const styles = Array.from(doc.querySelectorAll('link[rel="stylesheet"]'))
-        .map(link => link.getAttribute("href"))
-        .filter(Boolean)
-        .map(href => {
-          if (href.startsWith("http")) return href;
-          if (href.startsWith("/")) return href;
-          return "/takeoff/takeoffmilan.com/" + href;
-        });
+     const basePath = "/takeoff/takeoffmilan.com/";
+
+doc.querySelectorAll("link[href], img[src], source[src], video[src]").forEach(el => {
+  ["href", "src"].forEach(attr => {
+    const value = el.getAttribute(attr);
+    if (!value) return;
+
+    if (value.startsWith("http")) return;
+    if (value.startsWith("data:")) return;
+    if (value.startsWith("/")) return;
+
+    el.setAttribute(attr, basePath + value);
+  });
+});
+
+const styles = Array.from(doc.querySelectorAll('link[rel="stylesheet"]'))
+  .map(link => link.getAttribute("href"))
+  .filter(Boolean);
 
       const html = doc.body.innerHTML;
 
