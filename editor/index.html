@@ -1,107 +1,82 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>TakeOff Builder</title>
+  <meta charset="utf-8">
+  <title>TakeOff Visual Editor</title>
 
-<link rel="stylesheet"
-href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">
+  <script src="https://unpkg.com/grapesjs"></script>
 
-<script src="https://unpkg.com/grapesjs"></script>
-
-<style>
-html,body{
-height:100%;
-margin:0;
-}
-
-#gjs{
-height:100vh;
-}
-
-.panel__top{
-padding:0;
-width:100%;
-display:flex;
-}
-
-.panel__basic-actions{
-position:initial;
-}
-</style>
+  <style>
+    html, body { margin: 0; height: 100%; }
+    #gjs { height: 100vh; }
+  </style>
 </head>
 
 <body>
+  <div id="gjs">Loading...</div>
 
-<div id="gjs">
-<section style="padding:100px;text-align:center">
-<h1>TakeOff</h1>
-<p>Clicca e modifica testo, immagini, colori.</p>
-<a href="#" style="padding:15px 30px;background:#000;color:#fff;text-decoration:none;border-radius:40px;">
-Contact Us
-</a>
-</section>
-</div>
+  <script>
+    async function loadSite() {
+      const res = await fetch("/takeoff/takeoffmilan.com/index.html");
+      const htmlText = await res.text();
 
-<script>
-const editor = grapesjs.init({
-container:'#gjs',
-height:'100vh',
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlText, "text/html");
 
-storageManager:false,
+      doc.querySelectorAll("script").forEach(s => s.remove());
 
-panels:{
-defaults:[
-{
-id:'panel-top',
-el:'.panel__top'
-},
-{
-id:'basic-actions',
-el:'.panel__basic-actions',
-buttons:[
-{
-id:'visibility',
-active:true,
-className:'fa fa-eye',
-command:'sw-visibility'
-},
-{
-id:'export',
-label:'Export',
-command:'export-template'
-}
-]
-}
-]
-},
+      const styles = Array.from(doc.querySelectorAll('link[rel="stylesheet"]'))
+        .map(link => link.getAttribute("href"))
+        .filter(Boolean)
+        .map(href => {
+          if (href.startsWith("http")) return href;
+          if (href.startsWith("/")) return href;
+          return "/takeoff/takeoffmilan.com/" + href;
+        });
 
-blockManager:{
-appendTo:'body'
-}
-});
+      const html = doc.body.innerHTML;
 
+      const editor = grapesjs.init({
+        container: "#gjs",
+        height: "100vh",
+        fromElement: false,
+        storageManager: false,
+        components: html,
+        canvas: {
+          styles: styles
+        },
+        blockManager: {
+          appendTo: false
+        }
+      });
 
-editor.BlockManager.add('text',{
-label:'Text',
-content:'<div style="padding:30px;">Nuovo testo</div>'
-});
+      editor.Panels.addButton("options", {
+        id: "export-html",
+        label: "Export HTML",
+        command(editor) {
+          const finalHtml = `
+<!doctype html>
+<html>
+<head>
+${styles.map(s => `<link rel="stylesheet" href="${s}">`).join("\n")}
+<style>${editor.getCss()}</style>
+</head>
+<body>
+${editor.getHtml()}
+</body>
+</html>`;
 
-editor.BlockManager.add('image',{
-label:'Image',
-content:'<img src="https://via.placeholder.com/800x400">'
-});
+          const blob = new Blob([finalHtml], { type: "text/html" });
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "index.html";
+          a.click();
+        }
+      });
+    }
 
-editor.BlockManager.add('button',{
-label:'Button',
-content:'<a href="#" style="padding:14px 30px;background:#000;color:#fff;border-radius:40px;">Button</a>'
-});
-
-editor.BlockManager.add('section',{
-label:'Section',
-content:'<section style="padding:80px"><h2>Nuova sezione</h2></section>'
-});
-</script>
-
+    loadSite();
+  </script>
 </body>
 </html>
