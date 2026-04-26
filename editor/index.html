@@ -1,72 +1,107 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>TakeOff Visual Editor</title>
-  <link rel="stylesheet" href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">
-  <script src="https://unpkg.com/grapesjs"></script>
-  <style>
-    body { margin: 0; }
-    #gjs { height: 100vh; }
-  </style>
+<meta charset="utf-8">
+<title>TakeOff Builder</title>
+
+<link rel="stylesheet"
+href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">
+
+<script src="https://unpkg.com/grapesjs"></script>
+
+<style>
+html,body{
+height:100%;
+margin:0;
+}
+
+#gjs{
+height:100vh;
+}
+
+.panel__top{
+padding:0;
+width:100%;
+display:flex;
+}
+
+.panel__basic-actions{
+position:initial;
+}
+</style>
 </head>
+
 <body>
-  <div id="gjs"></div>
 
-  <script>
-    async function startEditor() {
-      let html = `
-        <section style="padding:100px 40px;text-align:center;font-family:Arial">
-          <h1 style="font-size:64px;margin-bottom:20px">TakeOff</h1>
-          <p style="font-size:22px">Editor visuale attivo.</p>
-          <a href="#" style="display:inline-block;margin-top:30px;padding:16px 30px;border-radius:50px;background:#000;color:#fff;text-decoration:none">Contact Us</a>
-        </section>
-      `;
+<div id="gjs">
+<section style="padding:100px;text-align:center">
+<h1>TakeOff</h1>
+<p>Clicca e modifica testo, immagini, colori.</p>
+<a href="#" style="padding:15px 30px;background:#000;color:#fff;text-decoration:none;border-radius:40px;">
+Contact Us
+</a>
+</section>
+</div>
 
-      const editor = grapesjs.init({
-        container: "#gjs",
-        height: "100vh",
-        storageManager: false,
-        components: html,
-      });
+<script>
+const editor = grapesjs.init({
+container:'#gjs',
+height:'100vh',
 
-      editor.BlockManager.add("text", {
-        label: "Text",
-        content: "<p>Nuovo testo</p>",
-      });
+storageManager:false,
 
-      editor.BlockManager.add("image", {
-        label: "Image",
-        content: '<img src="https://via.placeholder.com/800x400" style="max-width:100%">',
-      });
+panels:{
+defaults:[
+{
+id:'panel-top',
+el:'.panel__top'
+},
+{
+id:'basic-actions',
+el:'.panel__basic-actions',
+buttons:[
+{
+id:'visibility',
+active:true,
+className:'fa fa-eye',
+command:'sw-visibility'
+},
+{
+id:'export',
+label:'Export',
+command:'export-template'
+}
+]
+}
+]
+},
 
-      editor.BlockManager.add("button", {
-        label: "Button",
-        content: '<a href="#" style="padding:14px 28px;background:#000;color:#fff;border-radius:40px;text-decoration:none">Button</a>',
-      });
+blockManager:{
+appendTo:'body'
+}
+});
 
-      editor.Panels.addButton("options", {
-        id: "export",
-        label: "Export",
-        command(editor) {
-          const full = `
-<!doctype html>
-<html>
-<head>
-<style>${editor.getCss()}</style>
-</head>
-<body>${editor.getHtml()}</body>
-</html>`;
-          const blob = new Blob([full], { type: "text/html" });
-          const a = document.createElement("a");
-          a.href = URL.createObjectURL(blob);
-          a.download = "index-export.html";
-          a.click();
-        },
-      });
-    }
 
-    startEditor();
-  </script>
+editor.BlockManager.add('text',{
+label:'Text',
+content:'<div style="padding:30px;">Nuovo testo</div>'
+});
+
+editor.BlockManager.add('image',{
+label:'Image',
+content:'<img src="https://via.placeholder.com/800x400">'
+});
+
+editor.BlockManager.add('button',{
+label:'Button',
+content:'<a href="#" style="padding:14px 30px;background:#000;color:#fff;border-radius:40px;">Button</a>'
+});
+
+editor.BlockManager.add('section',{
+label:'Section',
+content:'<section style="padding:80px"><h2>Nuova sezione</h2></section>'
+});
+</script>
+
 </body>
 </html>
