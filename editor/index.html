@@ -9,6 +9,7 @@
     html, body { margin: 0; height: 100%; }
     #gjs { height: 100vh; }
   </style>
+  <script src="/editor/blocks/generated-blocks.js"></script>
 </head>
 <body>
   <div id="gjs">Loading...</div>
@@ -29,7 +30,10 @@
         canvas: {
           scripts: [],
         }
-      });
+      })
+      if (window.registerTakeoffBlocks) {
+  window.registerTakeoffBlocks(editor);
+};
 
       editor.Panels.addButton("options", {
         id: "export-html",
