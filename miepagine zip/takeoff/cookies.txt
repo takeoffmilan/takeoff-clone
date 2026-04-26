@@ -1,0 +1,12 @@
+# HTTrack Website Copier Cookie File
+# This file format is compatible with Netscape cookies
+takeoffmilan.com	TRUE	/	FALSE	1999999999	_shopify_essential	:AZ3JNu-LAAEADvYz4wQkTaUIBTut7TZ7SpRQjgnmWnznsWpDaBiM_grs1LCOsFF3O3hbV-wTkGXxVTgs24irTdOGk06h3ibDvGKGxoSe61b4yFXws9Jaqkq1jkqn_oJbFjD373N4OXcob-wFTXTiI-LjYWhp-tiESfHwoYbM9HCcBchWoWnG8yrghMgPiNjvFhsNLkGMzYSweeG0Qkyj9Tm5M18zP2dFvhnUiUDH4GUytiAaCWn6iC5C6he2BqSSyvnRI18gFaSg5Riq-227YNR9ByRRE378Oc_B3fw_93s7ND6HchZ-v0wdSaEYUPGDJrY71maEP9MML0guqvIRkWq3sL1qrGqc8mC2Hg-FbWlXtVqTjBaBlIavRA9Cramni8bY78EMPxdRMyazYdGSwIB-bapi4O7TBjSb9AqScAE:
+takeoffmilan.com	TRUE	/	FALSE	1999999999	_shopify_analytics	:AZ3JNvBvAAEAa2u7hba8JIZETfsjRX_-fFpVB4f9-UzfE5VjEUYewX7Sbocxai3xS3pPbbNuQgxk5pwv9qL8BrBt07-ziXVaBnzdKEY:
+takeoffmilan.com	TRUE	/	FALSE	1999999999	_shopify_marketing	:AZ3JNvBvAAEAhoubPHh8pjKHJKyFDc4ywYLeZ0Q6nKq9VjDIIJyDTqOoRZAvXUCfjIEsKgq1MjqVvF0d4zpXFRoDhEw:
+takeoffmilan.com	TRUE	/	FALSE	1999999999	Priority	High
+takeoffmilan.com	TRUE	/	FALSE	1999999999	localization	IT
+takeoffmilan.com	TRUE	/	FALSE	1999999999	cart_currency	EUR
+takeoffmilan.com	TRUE	/	FALSE	1999999999	_shopify_y	9e1106ae-5355-4689-9e34-5fe3ff6aadaf
+takeoffmilan.com	TRUE	/	FALSE	1999999999	_shopify_s	32c872aa-d5e9-481f-9bc9-c5f7e910eeab
+takeoffmilan.com	TRUE	/	FALSE	1999999999	SameSite	Lax
+

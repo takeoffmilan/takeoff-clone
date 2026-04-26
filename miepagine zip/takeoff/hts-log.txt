@@ -1,0 +1,19 @@
+HTTrack3.49-2+htsswf+htsjava launched on Sun, 26 Apr 2026 11:55:12 at https://takeoffmilan.com/ +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qwC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "it, en, *" https://takeoffmilan.com/ -O1 "C:\Mie pagine Web\takeoff" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+11:55:59	Error: 	"Not Found" (404) at link https://takeoffmilan.com/POST (from https://takeoffmilan.com/)
+11:55:59	Error: 	"Error when decompressing" (-1) at link https://takeoffmilan.com/cdn (from https://takeoffmilan.com/)
+11:56:04	Error: 	"Not Found" (404) at link https://takeoffmilan.com/pages/store-development (from https://takeoffmilan.com/)
+11:56:04	Error: 	"Not Found" (404) at link https://takeoffmilan.com/pages/seo (from https://takeoffmilan.com/)
+11:56:04	Error: 	"Not Found" (404) at link https://takeoffmilan.com/pages/video-editing (from https://takeoffmilan.com/)
+11:56:04	Error: 	"Not Found" (404) at link https://takeoffmilan.com/pages/advertising (from https://takeoffmilan.com/)
+11:56:06	Error: 	"Not Found" (404) at link https://takeoffmilan.com/pages/POST (from https://takeoffmilan.com/pages/contact)
+11:56:06	Error: 	"Not Found" (404) at link https://takeoffmilan.com/policies/POST (from https://takeoffmilan.com/policies/privacy-policy)
+
+HTTrack Website Copier/3.49-2 mirror complete in 54 seconds : 71 links scanned, 62 files written (32877150 bytes overall) [32065805 bytes received at 593811 bytes/sec], 2060974 bytes transferred using HTTP compression in 40 files, ratio 24%, 8.0 requests per connection
+(8 errors, 0 warnings, 0 messages)

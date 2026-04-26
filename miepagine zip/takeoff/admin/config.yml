@@ -1,0 +1,31 @@
+backend:
+  name: github
+  repo: takeoffmilan/ecommerce-custom
+  branch: main
+
+media_folder: "takeoff"
+public_folder: "/takeoff"
+
+collections:
+  - name: "homepage"
+    label: "Homepage"
+    files:
+      - file: "content/home.yml"
+        label: "Homepage Content"
+        name: "home"
+        fields:
+          - label: Hero Title
+            name: hero_title
+            widget: string
+
+          - label: Hero Subtitle
+            name: hero_subtitle
+            widget: text
+
+          - label: Button Text
+            name: button_text
+            widget: string
+
+          - label: Button Link
+            name: button_link
+            widget: string
