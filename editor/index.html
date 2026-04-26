@@ -3,53 +3,81 @@
 <head>
   <meta charset="utf-8">
   <title>TakeOff Visual Editor</title>
+
   <link rel="stylesheet" href="https://unpkg.com/grapesjs/dist/css/grapes.min.css">
   <script src="https://unpkg.com/grapesjs"></script>
-  <style>
-    html, body { margin: 0; height: 100%; }
-    #gjs { height: 100vh; }
-  </style>
   <script src="/editor/blocks/generated-blocks.js"></script>
-</head>
-<body>
-  <div id="gjs">Loading...</div>
 
-  <script>
-    async function loadSite() {
-      const res = await fetch("/takeoff/takeoffmilan.com/index.html");
-      let html = await res.text();
-
-      html = html.replace(/<script[\s\S]*?<\/script>/gi, "");
-
-      const editor = grapesjs.init({
-        container: "#gjs",
-        height: "100vh",
-        fromElement: false,
-        storageManager: false,
-        components: html,
-        canvas: {
-          scripts: [],
-        }
-      })
-      if (window.registerTakeoffBlocks) {
-  window.registerTakeoffBlocks(editor);
-};
-
-      editor.Panels.addButton("options", {
-        id: "export-html",
-        label: "Export HTML",
-        command(editor) {
-          const finalHtml = editor.getHtml();
-          const blob = new Blob([finalHtml], { type: "text/html" });
-          const a = document.createElement("a");
-          a.href = URL.createObjectURL(blob);
-          a.download = "index.html";
-          a.click();
-        }
-      });
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
     }
 
-    loadSite();
+    #gjs {
+      height: 100vh;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="gjs"></div>
+
+  <script>
+    const editor = grapesjs.init({
+      container: "#gjs",
+      height: "100vh",
+      fromElement: false,
+      storageManager: false,
+
+      components: `
+        <main style="min-height:100vh;padding:80px;text-align:center;font-family:Arial;">
+          <h1>TakeOff Builder</h1>
+          <p>Trascina le sezioni da sinistra.</p>
+        </main>
+      `,
+
+      canvas: {
+        styles: window.takeoffCanvasStyles || []
+      },
+
+      blockManager: {
+        appendTo: false
+      }
+    });
+
+    if (window.registerTakeoffBlocks) {
+      window.registerTakeoffBlocks(editor);
+    }
+
+    editor.Panels.addButton("options", {
+      id: "export-html",
+      label: "Export HTML",
+      command(editor) {
+        const styles = (window.takeoffCanvasStyles || [])
+          .map(s => `<link rel="stylesheet" href="${s}">`)
+          .join("\n");
+
+        const full = `
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+${styles}
+<style>${editor.getCss()}</style>
+</head>
+<body>
+${editor.getHtml()}
+</body>
+</html>`;
+
+        const blob = new Blob([full], { type: "text/html" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "index-export.html";
+        a.click();
+      }
+    });
   </script>
 </body>
 </html>
